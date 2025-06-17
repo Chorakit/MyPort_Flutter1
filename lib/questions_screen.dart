@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/answer_button.dart';
 import 'package:flutter_application/data/questions.dart';
+import 'package:flutter_application/customtextstyle.dart';
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({super.key});
@@ -32,11 +33,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              currentQuestion.text,
-              style: const TextStyle(color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
+            CustomTextStyle(text: currentQuestion.text, size: 24),
             const SizedBox(height: 30),
             ...currentQuestion.answers.map((answer) {
               return AnswerButton(answerText: answer, onTap: answerQuestion);
