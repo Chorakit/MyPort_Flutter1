@@ -4,7 +4,8 @@ import 'package:flutter_application/data/questions.dart';
 import 'package:flutter_application/customtextstyle.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key});
+  const QuestionsScreen({super.key, required this.onSelectAnswer});
+  final void Function(String answer) onSelectAnswer;
 
   @override
   State<QuestionsScreen> createState() {
@@ -15,7 +16,8 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreenState extends State<QuestionsScreen> {
   var currentQuestionIndex = 0;
 
-  void answerQuestion() {
+  void answerQuestion(String selectedAnswer) {
+    widget.onSelectAnswer(selectedAnswer);
     setState(() {
       currentQuestionIndex++;
     });
@@ -24,7 +26,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   @override
   Widget build(context) {
     final currentQuestion = questions[currentQuestionIndex];
-
     return SizedBox(
       width: double.infinity,
       child: Container(
@@ -35,8 +36,13 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           children: [
             CustomTextStyle(text: currentQuestion.text, size: 24),
             const SizedBox(height: 30),
-            ...currentQuestion.answers.map((answer) {
-              return AnswerButton(answerText: answer, onTap: answerQuestion);
+            ...currentQuestion.getShuffledAnswers().map((answer) {
+              return AnswerButton(
+                answerText: answer,
+                onTap: () {
+                  answerQuestion(answer);
+                },
+              );
             }),
           ],
         ),
